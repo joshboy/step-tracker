@@ -45,13 +45,14 @@ export async function getActivity(userId, date) {
 export async function getUserActivities(userId, startDate, endDate) {
   const q = query(
     collection(db, ACTIVITIES_COLLECTION),
-    where('userId', '==', userId),
     where('date', '>=', startDate),
     where('date', '<=', endDate),
     orderBy('date', 'asc')
   );
   const snap = await getDocs(q);
-  return snap.docs.map((d) => d.data());
+  return snap.docs
+    .map((d) => d.data())
+    .filter((a) => a.userId === userId);
 }
 
 export async function getAllActivities(startDate, endDate) {

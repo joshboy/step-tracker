@@ -49,6 +49,10 @@ export default function Dashboard() {
     try {
       await saveActivity(currentUser.uid, selectedDate, { steps: stepCount });
       setSavedSteps(stepCount);
+      const ranges = getDateRanges();
+      if (selectedDate === ranges.yesterday) {
+        setTodayActivity({ steps: stepCount });
+      }
       setMessage('Steps saved!');
       loadWeekStats();
       setTimeout(() => setMessage(''), 3000);
