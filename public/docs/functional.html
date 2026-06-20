@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StepTracker - Functional Documentation</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f9fafb;
+      color: #1f2937;
+      line-height: 1.7;
+    }
+    .header {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      padding: 48px 24px;
+    }
+    .header-inner { max-width: 900px; margin: 0 auto; }
+    .header h1 { font-size: 32px; margin-bottom: 8px; }
+    .header p { opacity: 0.9; }
+    .header nav { margin-top: 8px; }
+    .header nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px; }
+    .header nav a:hover { color: white; }
+    .container { max-width: 900px; margin: 0 auto; padding: 32px 24px; }
+    h2 {
+      font-size: 24px;
+      color: #111827;
+      margin: 48px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e5e7eb;
+    }
+    h2:first-of-type { margin-top: 0; }
+    h3 { font-size: 18px; color: #374151; margin: 28px 0 12px; }
+    p { margin-bottom: 16px; }
+    ul, ol { margin-bottom: 16px; padding-left: 24px; }
+    li { margin-bottom: 6px; }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid #e5e7eb;
+      margin-bottom: 20px;
+    }
+    .card h4 { font-size: 15px; color: #4f46e5; margin-bottom: 8px; font-weight: 600; }
+    .card p:last-child { margin-bottom: 0; }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .toc {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+    .toc h3 { margin-top: 0; }
+    .toc ol { padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: #4f46e5; text-decoration: none; font-size: 15px; }
+    .toc a:hover { text-decoration: underline; }
+    .workflow {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 20px 0;
+    }
+    .workflow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .workflow-step:last-child { margin-bottom: 0; }
+    .step-number {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      background: #4f46e5;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .step-content h4 {
+      font-size: 15px;
+      color: #1f2937;
+      margin-bottom: 4px;
+    }
+    .step-content p {
+      font-size: 14px;
+      color: #6b7280;
+      margin: 0;
+    }
+    .note {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #1e40af;
+    }
+    .role-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+    }
+    .role-table th, .role-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid #f3f4f6;
+      font-size: 14px;
+    }
+    .role-table th { background: #f9fafb; font-weight: 600; color: #374151; }
+    .role-table td { color: #4b5563; }
+    .check { color: #16a34a; font-weight: 700; }
+    .cross { color: #dc2626; }
+    code {
+      background: #f3f4f6;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: 'SF Mono', Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      .feature-grid { grid-template-columns: 1fr; }
+      .header h1 { font-size: 24px; }
+      h2 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-inner">
+      <nav><a href="index.html">&larr; Documentation home</a></nav>
+      <h1>Functional Documentation</h1>
+      <p>Features, user workflows, and admin operations</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="toc">
+      <h3>Contents</h3>
+      <ol>
+        <li><a href="#overview">Application overview</a></li>
+        <li><a href="#roles">User roles and permissions</a></li>
+        <li><a href="#registration">Registration and login</a></li>
+        <li><a href="#dashboard">Dashboard and step logging</a></li>
+        <li><a href="#profile">Profile management</a></li>
+        <li><a href="#leaderboard">Leaderboard</a></li>
+        <li><a href="#stats">Statistics</a></li>
+        <li><a href="#admin">Admin panel</a></li>
+        <li><a href="#mobile">Mobile experience</a></li>
+      </ol>
+    </div>
+
+    <!-- 1. Overview -->
+    <h2 id="overview">1. Application overview</h2>
+    <p>
+      StepTracker is a web application that allows a group of users to track their daily step counts,
+      compare progress on leaderboards, and monitor personal fitness statistics over time. It is designed
+      for small to medium groups such as teams, families, or fitness communities.
+    </p>
+
+    <div class="feature-grid">
+      <div class="card">
+        <h4>Step tracking</h4>
+        <p>Log daily step counts for any date. Edit past entries at any time. Progress ring shows how close you are to your daily goal.</p>
+      </div>
+      <div class="card">
+        <h4>Leaderboards</h4>
+        <p>Weekly and monthly rankings show who's walking the most. See total steps, daily averages, and active days for each participant.</p>
+      </div>
+      <div class="card">
+        <h4>Personal stats</h4>
+        <p>View your step trends over time with interactive line charts. Toggle between day, week, month, and year views.</p>
+      </div>
+      <div class="card">
+        <h4>Profiles</h4>
+        <p>Customise your nickname, set a daily step goal, and track height, weight, and target weight.</p>
+      </div>
+      <div class="card">
+        <h4>Admin approval</h4>
+        <p>New user registrations require admin approval before they can access the app, keeping the group private.</p>
+      </div>
+      <div class="card">
+        <h4>Works everywhere</h4>
+        <p>Fully responsive design that works on desktop, tablet, and mobile browsers including iOS Safari.</p>
+      </div>
+    </div>
+
+    <!-- 2. Roles -->
+    <h2 id="roles">2. User roles and permissions</h2>
+    <p>The application has two roles and three account statuses:</p>
+
+    <h3>Statuses</h3>
+    <table class="role-table">
+      <tr><th>Status</th><th>Description</th></tr>
+      <tr><td><strong>Pending</strong></td><td>New registration awaiting admin approval. User sees a "Pending Approval" screen and cannot access the app.</td></tr>
+      <tr><td><strong>Approved</strong></td><td>Active user with full access to all features.</td></tr>
+      <tr><td><strong>Rejected</strong></td><td>Registration denied by admin. User sees a "Registration Rejected" message.</td></tr>
+    </table>
+
+    <h3>Roles</h3>
+    <table class="role-table">
+      <tr><th>Feature</th><th>Regular user</th><th>Admin</th></tr>
+      <tr><td>Log steps</td><td class="check">Yes</td><td class="check">Yes</td></tr>
+      <tr><td>View leaderboard</td><td class="check">Yes</td><td class="check">Yes</td></tr>
+      <tr><td>View personal stats</td><td class="check">Yes</td><td class="check">Yes</td></tr>
+      <tr><td>Edit own profile</td><td class="check">Yes</td><td class="check">Yes</td></tr>
+      <tr><td>Approve/reject users</td><td class="cross">No</td><td class="check">Yes</td></tr>
+      <tr><td>View all users</td><td class="cross">No</td><td class="check">Yes</td></tr>
+      <tr><td>Access admin panel</td><td class="cross">No</td><td class="check">Yes</td></tr>
+    </table>
+
+    <div class="note">
+      The admin account (<code>jithankurian@gmail.com</code>) is automatically approved and granted the admin role
+      on every login. No manual setup is required.
+    </div>
+
+    <!-- 3. Registration & Login -->
+    <h2 id="registration">3. Registration and login</h2>
+
+    <h3>Signing up (new user)</h3>
+    <div class="workflow">
+      <div class="workflow-step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Visit the app</h4>
+          <p>Navigate to the StepTracker URL. You'll see the login page.</p>
+        </div>
+      </div>
+      <div class="workflow-step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Choose sign-up method</h4>
+          <p><strong>Google SSO:</strong> Click "Sign in with Google" and select your Google account. Your name and profile photo are imported automatically.<br>
+          <strong>Email/Password:</strong> Click "Register" and fill in your name, email, and password.</p>
+        </div>
+      </div>
+      <div class="workflow-step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Wait for approval</h4>
+          <p>You'll see a "Pending Approval" screen. The admin will review and approve your account. Click "Check Status" to refresh, or simply log in again later.</p>
+        </div>
+      </div>
+      <div class="workflow-step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h4>Access granted</h4>
+          <p>Once approved, you'll be redirected to the dashboard automatically.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>Logging in (existing user)</h3>
+    <p>
+      Use either Google SSO or your email and password on the login page. If you previously signed up
+      with Google, always use the Google button. If you registered with email, use email and password.
+    </p>
+
+    <!-- 4. Dashboard -->
+    <h2 id="dashboard">4. Dashboard and step logging</h2>
+    <p>The dashboard is the home screen after login. It has three sections:</p>
+
+    <h3>Yesterday's progress</h3>
+    <p>
+      A circular progress ring shows how many steps you logged yesterday compared to your daily goal.
+      The ring fills as you approach 100% of your goal. If no steps are logged for yesterday, it shows a dash.
+    </p>
+
+    <h3>This week summary</h3>
+    <p>Four stats cards show your current week's performance:</p>
+    <ul>
+      <li><strong>Total Steps:</strong> Sum of all steps logged this week</li>
+      <li><strong>Daily Average:</strong> Average steps per day (only counting days with entries)</li>
+      <li><strong>Best Day:</strong> Highest single-day step count this week</li>
+      <li><strong>Days Logged:</strong> Number of days with step entries this week</li>
+    </ul>
+
+    <h3>Logging steps</h3>
+    <div class="workflow">
+      <div class="workflow-step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Select a date</h4>
+          <p>The date picker defaults to yesterday. You can select any date up to today. Past dates can be edited at any time.</p>
+        </div>
+      </div>
+      <div class="workflow-step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Enter step count</h4>
+          <p>Type your step count for that day. If a previous entry exists, it's pre-filled and shown as "Previously saved: X steps".</p>
+        </div>
+      </div>
+      <div class="workflow-step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Save</h4>
+          <p>Click "Save Steps" (or "Update Steps" if editing). The progress ring and week stats update immediately.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Profile -->
+    <h2 id="profile">5. Profile management</h2>
+    <p>Access your profile from the navigation bar. You can edit the following fields:</p>
+
+    <table class="role-table">
+      <tr><th>Field</th><th>Description</th><th>Default</th></tr>
+      <tr><td>Nickname</td><td>Display name shown on the leaderboard and to other users</td><td>Name from sign-up</td></tr>
+      <tr><td>Daily step goal</td><td>Your personal target, used for the progress ring calculation</td><td>10,000 steps</td></tr>
+      <tr><td>Height</td><td>Height in centimetres (optional, for future use)</td><td>Not set</td></tr>
+      <tr><td>Weight</td><td>Current weight in kilograms (optional, for future use)</td><td>Not set</td></tr>
+      <tr><td>Target weight</td><td>Goal weight in kilograms (optional, for future use)</td><td>Not set</td></tr>
+    </table>
+
+    <p>
+      Your profile photo comes from your Google account if you signed in with Google SSO.
+      For email/password users, the app shows your initials in a coloured circle.
+    </p>
+
+    <!-- 6. Leaderboard -->
+    <h2 id="leaderboard">6. Leaderboard</h2>
+    <p>
+      The leaderboard ranks all approved users by total step count. Switch between two time periods
+      using the toggle at the top:
+    </p>
+
+    <ul>
+      <li><strong>This Week:</strong> Monday to Sunday of the current week</li>
+      <li><strong>This Month:</strong> First to last day of the current calendar month</li>
+    </ul>
+
+    <p>Each entry on the leaderboard shows:</p>
+    <ul>
+      <li>Rank position (with medal icons for 1st, 2nd, 3rd place)</li>
+      <li>Profile photo or initials</li>
+      <li>Nickname</li>
+      <li>Total steps for the period</li>
+      <li>Daily average steps</li>
+      <li>Number of active days (days with step entries)</li>
+    </ul>
+
+    <p>Your own row is highlighted so you can quickly spot your position.</p>
+
+    <!-- 7. Stats -->
+    <h2 id="stats">7. Statistics</h2>
+    <p>
+      The Stats page shows your personal step history as an interactive line chart powered by Chart.js.
+      Toggle between four time periods:
+    </p>
+
+    <table class="role-table">
+      <tr><th>Period</th><th>Data shown</th><th>Date range</th></tr>
+      <tr><td>Day</td><td>Daily step counts</td><td>Last 7 days</td></tr>
+      <tr><td>Week</td><td>Daily step counts</td><td>Last 30 days</td></tr>
+      <tr><td>Month</td><td>Daily step counts</td><td>Current month</td></tr>
+      <tr><td>Year</td><td>Daily step counts</td><td>Current year</td></tr>
+    </table>
+
+    <p>Below the chart, summary cards display:</p>
+    <ul>
+      <li><strong>Total steps</strong> for the selected period</li>
+      <li><strong>Daily average</strong></li>
+      <li><strong>Best day</strong> (highest single-day count)</li>
+      <li><strong>Active days</strong> (number of days with entries)</li>
+    </ul>
+
+    <!-- 8. Admin -->
+    <h2 id="admin">8. Admin panel</h2>
+    <p>
+      The admin panel is accessible only to users with the admin role. It appears as "Admin" in the
+      navigation bar.
+    </p>
+
+    <h3>Pending users tab</h3>
+    <p>Shows all users with <code>pending</code> status. For each user, the admin can:</p>
+    <ul>
+      <li><strong>Approve:</strong> Sets the user's status to <code>approved</code>. They can now access the app.</li>
+      <li><strong>Reject:</strong> Sets the user's status to <code>rejected</code>. They'll see a "Registration Rejected" message on login.</li>
+    </ul>
+
+    <h3>All users tab</h3>
+    <p>
+      Lists every registered user with their email, status, and role. Useful for reviewing who has access
+      to the application.
+    </p>
+
+    <div class="workflow">
+      <div class="workflow-step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>New user registers</h4>
+          <p>A new entry appears in the "Pending Users" tab.</p>
+        </div>
+      </div>
+      <div class="workflow-step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Admin reviews</h4>
+          <p>Open the Admin panel, review the user's name and email.</p>
+        </div>
+      </div>
+      <div class="workflow-step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Approve or reject</h4>
+          <p>Click the appropriate button. The user's status updates instantly in Firestore.</p>
+        </div>
+      </div>
+      <div class="workflow-step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h4>User gains access</h4>
+          <p>The approved user clicks "Check Status" or logs in again to access the dashboard.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. Mobile -->
+    <h2 id="mobile">9. Mobile experience</h2>
+    <p>StepTracker is fully responsive and optimised for mobile browsers, including iOS Safari.</p>
+
+    <ul>
+      <li><strong>Navigation:</strong> The top bar collapses to a hamburger menu on screens under 768px wide</li>
+      <li><strong>Safe areas:</strong> The layout respects iOS notch/home indicator safe areas</li>
+      <li><strong>Touch-friendly:</strong> All buttons and inputs are sized for comfortable touch interaction</li>
+      <li><strong>Charts:</strong> Line charts resize to fit the screen width and remain interactive on touch</li>
+      <li><strong>Period toggles:</strong> Week/month toggle buttons wrap to a second row on narrow screens</li>
+    </ul>
+
+    <div class="note">
+      <strong>Tip:</strong> On iOS Safari, you can add StepTracker to your home screen for a more app-like
+      experience. Tap the Share button and choose "Add to Home Screen."
+    </div>
+
+    <a href="index.html" style="display: inline-block; margin-top: 32px; color: #4f46e5; text-decoration: none; font-weight: 500;">&larr; Back to documentation home</a>
+  </div>
+</body>
+</html>
