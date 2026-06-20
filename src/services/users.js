@@ -9,12 +9,7 @@ import {
   getDocs,
   serverTimestamp,
 } from 'firebase/firestore';
-import {
-  ref,
-  uploadBytes,
-  getDownloadURL,
-} from 'firebase/storage';
-import { db, storage } from './firebase';
+import { db } from './firebase';
 
 const USERS_COLLECTION = 'users';
 const ADMIN_EMAIL = 'jithankurian@gmail.com';
@@ -49,14 +44,6 @@ export async function updateUserProfile(uid, data) {
     ...data,
     updatedAt: serverTimestamp(),
   });
-}
-
-export async function uploadProfilePhoto(uid, file) {
-  const storageRef = ref(storage, `profilePhotos/${uid}`);
-  await uploadBytes(storageRef, file);
-  const url = await getDownloadURL(storageRef);
-  await updateUserProfile(uid, { photoURL: url });
-  return url;
 }
 
 export async function getPendingUsers() {

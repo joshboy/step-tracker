@@ -1,10 +1,9 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { updateUserProfile, uploadProfilePhoto } from '../services/users';
+import { updateUserProfile } from '../services/users';
 
 export default function Profile() {
   const { currentUser, userProfile, refreshProfile } = useAuth();
-  const fileInputRef = useRef();
   const [form, setForm] = useState({
     nickname: userProfile?.nickname || '',
     height: userProfile?.height || '',
@@ -13,7 +12,6 @@ export default function Profile() {
     targetWeight: userProfile?.targetWeight || '',
   });
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState('');
 
   function handleChange(e) {
@@ -40,25 +38,6 @@ export default function Profile() {
     setSaving(false);
   }
 
-  async function handlePhotoUpload(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    if (file.size > 2 * 1024 * 1024) {
-      setMessage('Photo must be under 2MB');
-      return;
-    }
-    setUploading(true);
-    try {
-      await uploadProfilePhoto(currentUser.uid, file);
-      await refreshProfile();
-      setMessage('Photo updated!');
-      setTimeout(() => setMessage(''), 3000);
-    } catch (err) {
-      setMessage('Error uploading: ' + err.message);
-    }
-    setUploading(false);
-  }
-
   return (
     <div className="profile-page">
       <h1>My Profile</h1>
@@ -66,7 +45,7 @@ export default function Profile() {
       <div className="profile-grid">
         <div className="card photo-card">
           <div className="photo-section">
-            <div className="avatar-large" onClick={() => fileInputRef.current?.click()}>
+            <div className="avatar-large">
               {userProfile?.photoURL ? (
                 <img src={userProfile.photoURL} alt="Profile" />
               ) : (
@@ -74,17 +53,7 @@ export default function Profile() {
                   {(userProfile?.nickname || userProfile?.displayName || '?')[0].toUpperCase()}
                 </div>
               )}
-              <div className="avatar-overlay">
-                {uploading ? 'Uploading...' : 'Change Photo'}
-              </div>
             </div>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handlePhotoUpload}
-              hidden
-            />
           </div>
           <div className="profile-info">
             <p><strong>Email:</strong> {currentUser.email}</p>
