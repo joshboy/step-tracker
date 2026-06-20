@@ -15,6 +15,10 @@ service cloud.firestore {
       allow update: if request.auth != null && request.auth.uid == userId
         && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['status', 'role']);
 
+      // Admin email can always self-promote (bootstrap rule)
+      allow update: if request.auth != null && request.auth.uid == userId
+        && request.auth.token.email == 'jithankurian@gmail.com';
+
       // Admin can update any profile (including status/role)
       allow update: if request.auth != null
         && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
