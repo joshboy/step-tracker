@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>StepTracker QR Code</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f9fafb;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 48px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+    }
+    h1 { font-size: 24px; color: #111827; margin: 24px 0 8px; }
+    p { color: #6b7280; margin: 0 0 4px; font-size: 15px; }
+    .url { font-family: monospace; font-size: 13px; color: #9ca3af; }
+    #qr { display: inline-block; }
+    #qr img { border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div id="qr"></div>
+    <h1>StepTracker</h1>
+    <p>Scan to open the app</p>
+    <p class="url">joshboy.github.io/step-tracker</p>
+  </div>
+  <script>
+    new QRCode(document.getElementById('qr'), {
+      text: 'https://joshboy.github.io/step-tracker/',
+      width: 280,
+      height: 280,
+      colorDark: '#111827',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.H
+    });
+  </script>
+</body>
+</html>
