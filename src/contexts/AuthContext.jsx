@@ -9,7 +9,7 @@ import {
   updateProfile,
 } from 'firebase/auth';
 import { auth } from '../services/firebase';
-import { getUserProfile, createUserProfile } from '../services/users';
+import { getUserProfile, createUserProfile, updateUserProfile, isAdminEmail } from '../services/users';
 
 const AuthContext = createContext();
 
@@ -29,11 +29,15 @@ export function AuthProvider({ children }) {
     }
     let profile = await getUserProfile(user.uid);
     if (!profile) {
-      profile = await createUserProfile(user.uid, {
+      await createUserProfile(user.uid, {
         email: user.email,
         displayName: user.displayName,
         photoURL: user.photoURL,
       });
+      profile = await getUserProfile(user.uid);
+    }
+    if (isAdminEmail(user.email) && (profile.status !== 'approved' || profile.role !== 'admin')) {
+      await updateUserProfile(user.uid, { status: 'approved', role: 'admin' });
       profile = await getUserProfile(user.uid);
     }
     setUserProfile(profile);
