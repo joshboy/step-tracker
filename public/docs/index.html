@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StepTracker Documentation</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f9fafb;
+      color: #1f2937;
+      line-height: 1.7;
+    }
+    .header {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      padding: 48px 24px;
+      text-align: center;
+    }
+    .header h1 { font-size: 36px; margin-bottom: 8px; }
+    .header p { opacity: 0.9; font-size: 18px; }
+    .container { max-width: 900px; margin: 0 auto; padding: 32px 24px; }
+    .doc-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 32px;
+    }
+    .doc-card {
+      background: white;
+      border-radius: 12px;
+      padding: 32px;
+      border: 1px solid #e5e7eb;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .doc-card:hover {
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      transform: translateY(-2px);
+    }
+    .doc-card h2 { font-size: 22px; color: #4f46e5; margin-bottom: 12px; }
+    .doc-card p { color: #6b7280; font-size: 15px; }
+    .doc-card .topics { margin-top: 16px; }
+    .doc-card .topic-tag {
+      display: inline-block;
+      background: #f3f4f6;
+      color: #374151;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      margin: 4px 4px 0 0;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 32px;
+      color: #4f46e5;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    @media (max-width: 600px) {
+      .doc-cards { grid-template-columns: 1fr; }
+      .header h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>StepTracker Documentation</h1>
+    <p>Technical and functional guides for the StepTracker application</p>
+  </div>
+  <div class="container">
+    <div class="doc-cards">
+      <a href="technical.html" class="doc-card">
+        <h2>Technical Documentation</h2>
+        <p>Architecture, technology stack, component interactions, data model, deployment, and scaling considerations.</p>
+        <div class="topics">
+          <span class="topic-tag">Architecture</span>
+          <span class="topic-tag">Firebase</span>
+          <span class="topic-tag">React</span>
+          <span class="topic-tag">Deployment</span>
+          <span class="topic-tag">Security</span>
+          <span class="topic-tag">Data Model</span>
+        </div>
+      </a>
+      <a href="functional.html" class="doc-card">
+        <h2>Functional Documentation</h2>
+        <p>Features overview, user workflows, admin operations, and user guide for all app functionality.</p>
+        <div class="topics">
+          <span class="topic-tag">User Guide</span>
+          <span class="topic-tag">Authentication</span>
+          <span class="topic-tag">Step Tracking</span>
+          <span class="topic-tag">Leaderboard</span>
+          <span class="topic-tag">Admin Panel</span>
+        </div>
+      </a>
+    </div>
+    <a href="../" class="back-link">&larr; Back to StepTracker app</a>
+  </div>
+</body>
+</html>
