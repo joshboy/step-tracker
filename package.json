@@ -10,6 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@salt-ds/core": "^1.65.1",
+    "@salt-ds/icons": "^1.18.0",
+    "@salt-ds/lab": "^1.0.0-alpha.97",
+    "@salt-ds/theme": "^1.43.0",
     "chart.js": "^4.5.1",
     "date-fns": "^4.4.0",
     "firebase": "^12.15.0",

@@ -10,6 +10,7 @@ import {
 } from 'firebase/auth';
 import { auth } from '../services/firebase';
 import { getUserProfile, createUserProfile, updateUserProfile, isAdminEmail } from '../services/users';
+import { linkEmailInvites } from '../services/leagues';
 
 const AuthContext = createContext();
 
@@ -41,6 +42,9 @@ export function AuthProvider({ children }) {
       profile = await getUserProfile(user.uid);
     }
     setUserProfile(profile);
+    if (user.email) {
+      linkEmailInvites(user.email, user.uid).catch(() => {});
+    }
     return profile;
   }
 

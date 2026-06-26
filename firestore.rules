@@ -35,5 +35,81 @@ service cloud.firestore {
         && request.resource.data.userId == request.auth.uid
         && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.status == 'approved';
     }
+
+    // Leagues collection
+    match /leagues/{leagueId} {
+      allow read: if request.auth != null
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.status == 'approved';
+
+      allow create: if request.auth != null
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.status == 'approved'
+        && request.resource.data.createdBy == request.auth.uid;
+
+      allow update: if request.auth != null
+        && get(/databases/$(database)/documents/leagueMembers/$(leagueId + '_' + request.auth.uid)).data.role == 'admin'
+        && get(/databases/$(database)/documents/leagueMembers/$(leagueId + '_' + request.auth.uid)).data.status == 'active';
+
+      allow delete: if request.auth != null
+        && get(/databases/$(database)/documents/leagueMembers/$(leagueId + '_' + request.auth.uid)).data.role == 'admin';
+    }
+
+    // League members collection
+    match /leagueMembers/{memberId} {
+      allow read: if request.auth != null
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.status == 'approved';
+
+      // Users can create their own pending membership (join request)
+      allow create: if request.auth != null
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.status == 'pending'
+        && request.resource.data.role == 'member';
+
+      // League admins can create memberships (for invited users or initial setup)
+      allow create: if request.auth != null
+        && get(/databases/$(database)/documents/leagueMembers/$(request.resource.data.leagueId + '_' + request.auth.uid)).data.role == 'admin';
+
+      // League admins can update membership (approve, promote, demote)
+      allow update: if request.auth != null
+        && get(/databases/$(database)/documents/leagueMembers/$(resource.data.leagueId + '_' + request.auth.uid)).data.role == 'admin';
+
+      // Users can delete their own membership (leave)
+      allow delete: if request.auth != null
+        && resource.data.userId == request.auth.uid;
+
+      // League admins can delete memberships (reject request, remove member)
+      allow delete: if request.auth != null
+        && get(/databases/$(database)/documents/leagueMembers/$(resource.data.leagueId + '_' + request.auth.uid)).data.role == 'admin';
+    }
+
+    // League invites collection
+    match /leagueInvites/{inviteId} {
+      // Invited user can read their own invites
+      allow read: if request.auth != null
+        && resource.data.invitedUserId == request.auth.uid;
+
+      // League admins can read invites for their league
+      allow read: if request.auth != null
+        && get(/databases/$(database)/documents/leagueMembers/$(resource.data.leagueId + '_' + request.auth.uid)).data.role == 'admin';
+
+      // Any approved user can read invites by email (for linking on registration)
+      allow read: if request.auth != null
+        && resource.data.invitedEmail == request.auth.token.email;
+
+      // League admins can create invites
+      allow create: if request.auth != null
+        && get(/databases/$(database)/documents/leagueMembers/$(request.resource.data.leagueId + '_' + request.auth.uid)).data.role == 'admin';
+
+      // Invited user can update their own invite (accept/decline)
+      allow update: if request.auth != null
+        && resource.data.invitedUserId == request.auth.uid;
+
+      // Allow updating invites by email match (for linking email invites on registration)
+      allow update: if request.auth != null
+        && resource.data.invitedEmail == request.auth.token.email;
+
+      // League admins can delete invites
+      allow delete: if request.auth != null
+        && get(/databases/$(database)/documents/leagueMembers/$(resource.data.leagueId + '_' + request.auth.uid)).data.role == 'admin';
+    }
   }
 }

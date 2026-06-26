@@ -10,6 +10,9 @@ import Profile from './pages/Profile';
 import Leaderboard from './pages/Leaderboard';
 import Stats from './pages/Stats';
 import Admin from './pages/Admin';
+import LeaguesList from './pages/LeaguesList';
+import CreateLeague from './pages/CreateLeague';
+import LeagueDetail from './pages/LeagueDetail';
 
 function AppRoutes() {
   const { currentUser, userProfile, loading } = useAuth();
@@ -61,6 +64,30 @@ function AppRoutes() {
             element={
               <PrivateRoute>
                 <Stats />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/leagues"
+            element={
+              <PrivateRoute>
+                <LeaguesList />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/leagues/create"
+            element={
+              <PrivateRoute>
+                <CreateLeague />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/leagues/:leagueId"
+            element={
+              <PrivateRoute>
+                <LeagueDetail />
               </PrivateRoute>
             }
           />
