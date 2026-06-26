@@ -64,7 +64,12 @@ service cloud.firestore {
         && request.resource.data.status == 'pending'
         && request.resource.data.role == 'member';
 
-      // League admins can create memberships (for invited users or initial setup)
+      // League creator can create their own admin membership
+      allow create: if request.auth != null
+        && request.resource.data.userId == request.auth.uid
+        && get(/databases/$(database)/documents/leagues/$(request.resource.data.leagueId)).data.createdBy == request.auth.uid;
+
+      // League admins can create memberships (for invited users)
       allow create: if request.auth != null
         && get(/databases/$(database)/documents/leagueMembers/$(request.resource.data.leagueId + '_' + request.auth.uid)).data.role == 'admin';
 
